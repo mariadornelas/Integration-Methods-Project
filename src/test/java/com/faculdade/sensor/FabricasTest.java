@@ -8,7 +8,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/** Factory Method: cada fábrica cria seu produto com a estratégia padrão e o registra no Singleton. */
 class FabricasTest {
 
     private final CentralMonitoramento central = CentralMonitoramento.getInstancia();
@@ -103,7 +102,7 @@ class FabricasTest {
 
     @Test
     void novaFabricaPodeSerAdicionadaSemAlterarClassesExistentes() {
-        // Fábrica criada só no teste: temperatura, mas com outra estratégia padrão.
+
         FabricaSensor fabricaRigida = new FabricaSensor() {
             @Override
             protected Sensor criarSensor(String id, FonteLeitura fonte) {

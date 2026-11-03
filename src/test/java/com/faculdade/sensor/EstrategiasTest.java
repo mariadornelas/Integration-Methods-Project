@@ -6,7 +6,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/** As três estratégias usadas na integração, isoladas: histórico -> nível. */
 class EstrategiasTest {
 
     @Test
@@ -16,26 +15,26 @@ class EstrategiasTest {
         assertEquals(Nivel.NORMAL, e.avaliar(List.of(79.9)));
         assertEquals(Nivel.ALERTA, e.avaliar(List.of(80.0)));
         assertEquals(Nivel.CRITICO, e.avaliar(List.of(90.0)));
-        assertEquals(Nivel.NORMAL, e.avaliar(List.of(120.0, 50.0)));   // só a última conta
+        assertEquals(Nivel.NORMAL, e.avaliar(List.of(120.0, 50.0)));
     }
 
     @Test
     void taxaDeveUsarOMóduloDaVariacaoEIgnorarOValorAbsoluto() {
         EstrategiaAvaliacao e = new TaxaVariacao(1.5, 3.0);
 
-        assertEquals(Nivel.NORMAL, e.avaliar(List.of(50.0)));          // sem anterior
+        assertEquals(Nivel.NORMAL, e.avaliar(List.of(50.0)));
         assertEquals(Nivel.NORMAL, e.avaliar(List.of(50.0, 50.5)));
         assertEquals(Nivel.ALERTA, e.avaliar(List.of(50.0, 51.5)));
-        assertEquals(Nivel.CRITICO, e.avaliar(List.of(50.0, 47.0)));   // queda também conta
+        assertEquals(Nivel.CRITICO, e.avaliar(List.of(50.0, 47.0)));
     }
 
     @Test
     void mediaDeveUsarSomenteAJanelaEAbsorverPicos() {
         EstrategiaAvaliacao e = new MediaMovel(3, 5, 8);
 
-        assertEquals(Nivel.NORMAL, e.avaliar(List.of(2.0, 2.2, 9.0)));            // média 4,4
-        assertEquals(Nivel.ALERTA, e.avaliar(List.of(100.0, 4.0, 5.0, 6.0)));     // 100 fora da janela
-        assertEquals(Nivel.CRITICO, e.avaliar(List.of(9.0)));                     // histórico menor que a janela
+        assertEquals(Nivel.NORMAL, e.avaliar(List.of(2.0, 2.2, 9.0)));
+        assertEquals(Nivel.ALERTA, e.avaliar(List.of(100.0, 4.0, 5.0, 6.0)));
+        assertEquals(Nivel.CRITICO, e.avaliar(List.of(9.0)));
     }
 
     @Test

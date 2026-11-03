@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/** Singleton: instância única, construtor fechado, acesso seguro entre threads. */
 class CentralMonitoramentoTest {
 
     private final CentralMonitoramento central = CentralMonitoramento.getInstancia();
@@ -30,8 +29,6 @@ class CentralMonitoramentoTest {
     private static Sensor sensor(String id, double... valores) {
         return new SensorTemperatura(id, FonteLeitura.sequencia(valores), l -> Nivel.NORMAL);
     }
-
-    // ---- Singleton ----
 
     @Test
     void getInstanciaDeveSempreDevolverOMesmoObjeto() {
@@ -82,8 +79,6 @@ class CentralMonitoramentoTest {
             pool.shutdownNow();
         }
     }
-
-    // ---- registro ----
 
     @Test
     void deveRegistrarEBuscarPorId() {

@@ -7,7 +7,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/** Os quatro padrões juntos, no mesmo cenário da demonstração. */
 class IntegracaoTest {
 
     private final CentralMonitoramento central = CentralMonitoramento.getInstancia();
@@ -48,7 +47,7 @@ class IntegracaoTest {
         for (int i = 0; i < 4; i++) {
             central.medirTodos();
         }
-        // Sem a troca, a média móvel de V-01 no 5º ciclo seria ALERTA.
+
         List<Double> comQuinta = new java.util.ArrayList<>(vibracao.getHistorico());
         comQuinta.add(9.5);
         assertEquals(Nivel.ALERTA, new MediaMovel(3, 5, 8).avaliar(comQuinta));
@@ -70,12 +69,11 @@ class IntegracaoTest {
     void leituraImpossivelEmUmSensorDevePropagarEMantemOsOutrosHistoricosCoerentes() {
         central.limpar();
         Sensor bom = new FabricaTemperatura().criar("T-01", FonteLeitura.sequencia(70, 71));
-        new FabricaVibracao().criar("V-01", FonteLeitura.sequencia(2.0, -5.0));   // -5 mm/s é impossível
+        new FabricaVibracao().criar("V-01", FonteLeitura.sequencia(2.0, -5.0));
 
         central.medirTodos();
         assertThrows(IllegalStateException.class, central::medirTodos);
 
-        // T-01 (registrado antes) já tinha medido no 2º ciclo; V-01 não guardou o valor inválido.
         assertEquals(List.of(70.0, 71.0), bom.getHistorico());
         assertEquals(List.of(2.0), central.buscar("V-01").orElseThrow().getHistorico());
     }

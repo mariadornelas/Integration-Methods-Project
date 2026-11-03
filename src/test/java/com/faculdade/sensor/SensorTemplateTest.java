@@ -8,7 +8,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/** Template Method (o esqueleto de {@code medir}) com Strategy no último passo. */
 class SensorTemplateTest {
 
     private static final EstrategiaAvaliacao SEMPRE_NORMAL = l -> Nivel.NORMAL;
@@ -28,9 +27,9 @@ class SensorTemplateTest {
 
         Medicao m = s.medir();
 
-        assertEquals(6.5, m.valor(), 1e-9);   // 650 kPa = 6,5 bar
+        assertEquals(6.5, m.valor(), 1e-9);
         assertEquals("bar", m.unidade());
-        assertEquals(List.of(6.5), s.getHistorico());   // o histórico guarda o valor convertido
+        assertEquals(List.of(6.5), s.getHistorico());
     }
 
     @Test
@@ -46,7 +45,7 @@ class SensorTemplateTest {
         assertThrows(IllegalStateException.class,
                 () -> new SensorTemperatura("T", FonteLeitura.sequencia(-60.0), SEMPRE_NORMAL).medir());
         assertThrows(IllegalStateException.class,
-                () -> new SensorPressao("P", FonteLeitura.sequencia(-10.0), SEMPRE_NORMAL).medir());   // -0,1 bar
+                () -> new SensorPressao("P", FonteLeitura.sequencia(-10.0), SEMPRE_NORMAL).medir());
         assertThrows(IllegalStateException.class,
                 () -> new SensorVibracao("V", FonteLeitura.sequencia(-1.0), SEMPRE_NORMAL).medir());
         assertThrows(IllegalStateException.class,
@@ -75,7 +74,7 @@ class SensorTemplateTest {
         s.medir();
 
         assertEquals(List.of(70.0, 72.0), s.getHistorico());
-        assertEquals(List.of(1, 2), tamanhosVistos);   // a estratégia nunca viu o 5000
+        assertEquals(List.of(1, 2), tamanhosVistos);
     }
 
     @Test
@@ -177,7 +176,7 @@ class SensorTemplateTest {
     void fonteSimuladaDeveFalharQuandoAcabarEManterIndependenciaDoArrayOriginal() {
         double[] original = {1.0, 2.0};
         FonteLeitura f = FonteLeitura.sequencia(original);
-        original[0] = 99.0;   // mexer no array depois não pode afetar a fonte
+        original[0] = 99.0;
 
         assertEquals(1.0, f.ler());
         assertEquals(2.0, f.ler());
